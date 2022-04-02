@@ -6,15 +6,12 @@ const geometry = new THREE.SphereGeometry(
     32, 
     16 
     );
-const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-
+const material = new THREE.MeshBasicMaterial( { color: 0xC680D0 } );
 const sphere = new THREE.Mesh(geometry, material);
 
-sphere.position.x =initialConditions.x0,
-sphere.position.y =initialConditions.y0,
-sphere.position.z =initialConditions.z0
-
-
+sphere.position.x = initialConditions.x0,
+sphere.position.y = initialConditions.y0,
+sphere.position.z = initialConditions.z0
 
 export {
     sphere,

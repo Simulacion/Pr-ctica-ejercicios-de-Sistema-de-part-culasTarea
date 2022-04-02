@@ -35,7 +35,7 @@ const camera = new THREE.PerspectiveCamera(
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
   
-const controls = new OrbitControls( camera, renderer.domElement );
+//const controls = new OrbitControls( camera, renderer.domElement );
 
 const size = 10000;
 const divisions = 50;
@@ -43,18 +43,25 @@ const divisions = 50;
 const gridHelperX = new THREE.GridHelper( size, divisions );
 scene.add( gridHelperX );
 
-const gridHelperY = new THREE.GridHelper( size, divisions );
-gridHelperY.rotation.x = Math.PI/2;
-scene.add( gridHelperY );
+
+
 
 const axesHelper = new THREE.AxesHelper( 5 );
 scene.add( axesHelper );
 
-scene.add(sphere);
 
 
-camera.position.z = 100;
-camera.position.x = -50;
+
+for (let oi = 0 ; oi < 5 ; oi++){
+  for (let o = 0 ; o < 5 ; o++){
+    scene.add(sphere);
+  }
+
+}
+
+
+camera.position.z = 250;
+camera.position.x = 30;
 camera.position.y = 50;
 
 function animate() {
@@ -68,9 +75,9 @@ function animate() {
   zn  = zn + calculus.d(tn, zn, vzn)*paso
     
   tn  = tn + paso
-    
+  
   if(yn<=0){
-      yn    = -yn
+      yn    = 0
       vxn   =  krest * vxn 
       vyn   = -krest * vyn 
       vzn   =  krest * vzn 
@@ -79,15 +86,19 @@ function animate() {
   yn *= 1
   zn *= 1
 
+
   sphere.position.x = xn
   sphere.position.y = yn
   sphere.position.z = zn
-  // console.log(xn, yn, zn);
+
+  let Ci = []
+  Ci.push('sphere.position.x')
+  console.log(Ci.length)
   
   camera.lookAt(xn, yn, zn);
 
   requestAnimationFrame(animate);
-  controls.update();
+  //controls.update();
   renderer.render(scene, camera);
 }
 

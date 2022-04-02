@@ -30,7 +30,7 @@ for (let i = 0; i < initialConditions.frames; i+=paso){
       
     tn  = tn + paso
       
-    if(yn<=0){
+    if(yn <= 0){
         yn        = -yn
         vxn = krest * vxn 
         vyn = -krest * vyn 

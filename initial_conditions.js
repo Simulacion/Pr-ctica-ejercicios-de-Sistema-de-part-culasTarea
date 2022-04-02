@@ -1,4 +1,5 @@
 var btnSituacion1 =  document.getElementById('btnSituacion1');
+var x0_ =  document.getElementById('x0');
 
 var particles = 10;
 
@@ -15,7 +16,7 @@ var tam     = 50;
 var frames = Math.round((tf-t0/paso)+1);
 // Input number
 
-var x0  = Math.floor(Math.random() * 30);
+var x0  = x0_ || Math.floor(Math.random() * 30);
 var y0  = 100
 var z0  = Math.floor(Math.random() * 30);
 // Input number

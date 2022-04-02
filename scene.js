@@ -1,4 +1,4 @@
-import {sphere} from './geometries.js'
+import {particles} from './geometries.js'
 import * as initialConditions from './initial_conditions.js'
 import * as calculus from './calculus.js'
 
@@ -6,18 +6,10 @@ import { OrbitControls } from 'https://unpkg.com/three@0.119.1/examples/jsm/cont
 import * as THREE from 'https://unpkg.com/three@0.119.1/build/three.module.js';
 
 
-var vxn = initialConditions.vx0;
-var vyn = initialConditions.vy0;
-var vzn = initialConditions.vz0;
+var container = document.getElementById('canvas');
 
-var xn  = initialConditions.x0
-var yn  = initialConditions.y0
-var zn  = initialConditions.z0
-
-var paso = initialConditions.paso;
-var krest = initialConditions.krest;
-
-var tn = initialConditions.tn;
+var canvasWidth = container.offsetWidth;
+var canvasHeight = container.offsetHeight;
 
 
 const scene = new THREE.Scene();
@@ -26,16 +18,19 @@ scene.background = new THREE.Color (255, 255, 255)
 
 const camera = new THREE.PerspectiveCamera(
   75,
-  window.innerWidth / window.innerHeight,
+  canvasWidth / canvasHeight,
   0.1,
   10000
   );
   
-  const renderer = new THREE.WebGLRenderer();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.appendChild(renderer.domElement);
-  
-//const controls = new OrbitControls( camera, renderer.domElement );
+const renderer = new THREE.WebGLRenderer();
+renderer.setSize(canvasWidth, canvasHeight);
+document.body.appendChild(renderer.domElement);
+
+container.appendChild(renderer.domElement);
+
+
+const controls = new OrbitControls( camera, renderer.domElement );
 
 const size = 10000;
 const divisions = 50;
@@ -43,62 +38,73 @@ const divisions = 50;
 const gridHelperX = new THREE.GridHelper( size, divisions );
 scene.add( gridHelperX );
 
-
-
-
 const axesHelper = new THREE.AxesHelper( 5 );
 scene.add( axesHelper );
 
 
+camera.position.x = -820;
+camera.position.z = 1765;
+camera.position.y = 2158;
 
 
-for (let oi = 0 ; oi < 5 ; oi++){
-  for (let o = 0 ; o < 5 ; o++){
-    scene.add(sphere);
-  }
+// initial conditions
+var particlesProperties = []
 
+var vxn = initialConditions.vx0;
+var vyn = initialConditions.vy0;
+var vzn = initialConditions.vz0;
+
+var xn  = initialConditions.x0;
+var yn  = initialConditions.y0;
+var zn  = initialConditions.z0;
+
+var masa = initialConditions.masa;
+
+var paso = initialConditions.paso;
+var krest = initialConditions.krest;
+
+var tn = initialConditions.tn;
+
+for (let i = 0; i < particles.length; i++) {
+  particlesProperties.push(new Object({
+    particle: particles[i], 
+    xn: Math.floor(Math.random() * 30), 
+    yn: Math.floor(Math.random() * 30), 
+    zn: Math.floor(Math.random() * 30), 
+    vxn: Math.floor(Math.random() * 30), 
+    vyn: Math.floor(Math.random() * 100), 
+    vzn: Math.floor(Math.random() * 30), 
+    masa
+  }));
+  scene.add(particles[i]);
 }
 
 
-camera.position.z = 250;
-camera.position.x = 30;
-camera.position.y = 50;
-
 function animate() {
-
-  vxn = vxn + calculus.dv(tn, xn, vxn)*paso
-  vyn = vyn + calculus.dv(tn, yn, vyn, true)*paso
-  vzn = vzn + calculus.dv(tn, zn, vzn)*paso
-    
-  xn  = xn + calculus.d(tn, xn, vxn)*paso
-  yn  = yn + calculus.d(tn, yn, vyn, true)*paso
-  zn  = zn + calculus.d(tn, zn, vzn)*paso
-    
   tn  = tn + paso
-  
-  if(yn<=0){
-      yn    = 0
-      vxn   =  krest * vxn 
-      vyn   = -krest * vyn 
-      vzn   =  krest * vzn 
+
+  for (let i = 0; i < particlesProperties.length; i++) {
+    particlesProperties[i].vxn = particlesProperties[i].vxn + calculus.dv(tn, particlesProperties[i].xn, particlesProperties[i].vxn)*paso
+    particlesProperties[i].vyn = particlesProperties[i].vyn + calculus.dv(tn, particlesProperties[i].yn, particlesProperties[i].vyn, true)*paso
+    particlesProperties[i].vzn = particlesProperties[i].vzn + calculus.dv(tn, particlesProperties[i].zn, particlesProperties[i].vzn)*paso
+    particlesProperties[i].xn  = particlesProperties[i].xn  + calculus.d(tn, particlesProperties[i].xn, particlesProperties[i].vxn)*paso
+    particlesProperties[i].yn  = particlesProperties[i].yn  + calculus.d(tn, particlesProperties[i].yn, particlesProperties[i].vyn, true)*paso
+    particlesProperties[i].zn  = particlesProperties[i].zn  + calculus.d(tn, particlesProperties[i].zn, particlesProperties[i].vzn)*paso
+
+    if(particlesProperties[i].yn <= 0){
+      particlesProperties[i].yn    = 0
+      particlesProperties[i].vxn   =  krest * particlesProperties[i].vxn 
+      particlesProperties[i].vyn   = -krest * particlesProperties[i].vyn 
+      particlesProperties[i].vzn   =  krest * particlesProperties[i].vzn 
+    }
+    particlesProperties[i].particle.position.x = particlesProperties[i].xn;
+    particlesProperties[i].particle.position.y = particlesProperties[i].yn;
+    particlesProperties[i].particle.position.z = particlesProperties[i].zn;
   }
-  xn *= 1
-  yn *= 1
-  zn *= 1
-
-
-  sphere.position.x = xn
-  sphere.position.y = yn
-  sphere.position.z = zn
-
-  let Ci = []
-  Ci.push('sphere.position.x')
-  console.log(Ci.length)
   
-  camera.lookAt(xn, yn, zn);
-
+  // camera.lookAt(xn, yn, zn);
   requestAnimationFrame(animate);
-  //controls.update();
+  controls.update();
   renderer.render(scene, camera);
 }
 

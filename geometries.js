@@ -6,11 +6,14 @@ const geometry = new THREE.SphereGeometry(
     32, 
     16 
     );
-const material = new THREE.MeshBasicMaterial( { color: 0xC680D0 } );
+const material = new THREE.MeshBasicMaterial();
 
 var particles = []
+var color = new THREE.Color( 0xffffff );
 
 for (let i = 0; i < initialConditions.particles; i++) {
+    color.setHex( Math.random() * 0xffffff );
+    material.color = color;
     particles.push(new THREE.Mesh(geometry, material));
     particles[i].position.x = initialConditions.x0,
     particles[i].position.y = initialConditions.y0,

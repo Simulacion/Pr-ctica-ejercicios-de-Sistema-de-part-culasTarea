@@ -66,8 +66,17 @@ var krest = initialConditions.krest;
 var tn = initialConditions.tn;
 
 for (let i = 0; i < particles.length; i++) {
-  particlesProperties.push(new Object({particle: particles[i], xn, yn, zn, vxn, vyn, vzn, masa}));
-  scene.add(particles[0]);
+  particlesProperties.push(new Object({
+    particle: particles[i], 
+    xn: Math.floor(Math.random() * 30), 
+    yn: Math.floor(Math.random() * 30), 
+    zn: Math.floor(Math.random() * 30), 
+    vxn: Math.floor(Math.random() * 30), 
+    vyn: Math.floor(Math.random() * 100), 
+    vzn: Math.floor(Math.random() * 30), 
+    masa
+  }));
+  scene.add(particles[i]);
 }
 
 
@@ -82,7 +91,7 @@ function animate() {
     particlesProperties[i].yn  = particlesProperties[i].yn  + calculus.d(tn, particlesProperties[i].yn, particlesProperties[i].vyn, true)*paso
     particlesProperties[i].zn  = particlesProperties[i].zn  + calculus.d(tn, particlesProperties[i].zn, particlesProperties[i].vzn)*paso
 
-    if(yn<=0){
+    if(particlesProperties[i].yn <= 0){
       particlesProperties[i].yn    = 0
       particlesProperties[i].vxn   =  krest * particlesProperties[i].vxn 
       particlesProperties[i].vyn   = -krest * particlesProperties[i].vyn 
@@ -94,7 +103,6 @@ function animate() {
   }
   
   // camera.lookAt(xn, yn, zn);
-  // console.log(camera.position);
   requestAnimationFrame(animate);
   controls.update();
   renderer.render(scene, camera);

@@ -1,6 +1,6 @@
 var btnSituacion1 =  document.getElementById('btnSituacion1');
 
-var particles = 1;
+var particles = 10;
 
 // input range
 var t0      = 0;
@@ -9,23 +9,23 @@ var tf      = 10;
 // input range
 var paso    = 0.5;
 //input number
-var tam     = Math.floor(Math.random() * 50 + 5);
+var tam     = 50;
 
 // Input number
 var frames = Math.round((tf-t0/paso)+1);
 // Input number
 
 var x0  = Math.floor(Math.random() * 30);
-var y0  = 50
+var y0  = 100
 var z0  = Math.floor(Math.random() * 30);
 // Input number
 
-var vx0 = Math.floor(Math.random() * 30);
+var vx0 = Math.floor(Math.random() * 30); 
 var vy0 = Math.floor(Math.random() * 100);
 var vz0 = Math.floor(Math.random() * 30);
 
 // Input number
-var masa      = Math.floor(Math.random() * 5)
+var masa      = 1
 var gravity   = -9.8
 var krest     = 0.8
 

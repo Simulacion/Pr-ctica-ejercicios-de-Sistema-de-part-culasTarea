@@ -7,12 +7,18 @@ const geometry = new THREE.SphereGeometry(
     16 
     );
 const material = new THREE.MeshBasicMaterial( { color: 0xC680D0 } );
-const sphere = new THREE.Mesh(geometry, material);
 
-sphere.position.x = initialConditions.x0,
-sphere.position.y = initialConditions.y0,
-sphere.position.z = initialConditions.z0
+var particles = []
+
+for (let i = 0; i < initialConditions.particles; i++) {
+    particles.push(new THREE.Mesh(geometry, material));
+    particles[i].position.x = initialConditions.x0,
+    particles[i].position.y = initialConditions.y0,
+    particles[i].position.z = initialConditions.z0
+}
+
+// const sphere = new THREE.Mesh(geometry, material);
 
 export {
-    sphere,
+    particles,
 }

@@ -1,1 +1,1 @@
-# Pr-ctica-ejercicios-de-Sistema-de-part-culasTarea
+# Practica-ejercicios-de-Sistema-de-particulas

@@ -30,7 +30,7 @@ export default class Particle{
         this.particle.position.x = this.xn;
         this.particle.position.y = this.yn;
         this.particle.position.z = this.zn;
-        // console.log(this.xn, this.yn, this.zn);
+        // console.log( this.yn);
     }
 
     detectCollision(){
@@ -44,6 +44,7 @@ export default class Particle{
     }
 
     euler(){
+        // console.log(`${this.vyn} = ${this.calculus.euler(this.vyn, 'dv', false)}`);
         this.vxn = this.calculus.euler(this.vxn, 'dv', false);
         this.vyn = this.calculus.euler(this.vyn, 'dv', true);
         this.vzn = this.calculus.euler(this.vzn, 'dv', false);

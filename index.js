@@ -1,7 +1,6 @@
 import { OrbitControls } from 'https://unpkg.com/three@0.119.1/examples/jsm/controls/OrbitControls.js';
 import * as THREE from 'https://unpkg.com/three@0.119.1/build/three.module.js';
-import * as initialConditions from './initial_conditions.js'; 
-import Particle from './Particle.js'
+import Particle from './Classes/Particle.js'
 
 var container = document.getElementById('canvas');
 
@@ -44,7 +43,11 @@ camera.position.y = 2158;
 var particles = []
 var color = new THREE.Color( 0xffffff );
 
-for (let i = 0; i < initialConditions.particles; i++) {
+// --------------------------------------------------
+
+var nParticles = 100;
+
+for (let i = 0; i < nParticles; i++) {
     color.setHex( Math.random() * 0xffffff );
 
     let geometry = new THREE.SphereGeometry(Math.floor(Math.random() * 80),32,16);

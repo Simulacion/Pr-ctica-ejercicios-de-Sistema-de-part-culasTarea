@@ -1,20 +1,19 @@
-// import * as calculus from './calculus.js'
-import Calculus from './calculus.js'
+import Calculus from './Calculus.js'
 
 var calculus = new Calculus();
 
 export default class Particle{
-    constructor(){
+    constructor(xn, yn, zn, vxn, vyn, vzn, mass, krest){
         this.particle = null;
-        this.xn = Math.floor(Math.random() * (80-10)+10); 
-        this.yn = Math.floor(Math.random() * (80-10)+10); 
-        this.zn = Math.floor(Math.random() * (80-10)+10); 
-        this.vxn= Math.floor(Math.random() * (80-10)+10); 
-        this.vyn= Math.floor(Math.random() * (160-10)+10); 
-        this.vzn= Math.floor(Math.random() * (80-10)+10); 
+        this.xn = xn  || Math.floor(Math.random() * (80-10)+10); 
+        this.yn = yn  || Math.floor(Math.random() * (80-10)+10); 
+        this.zn = zn  || Math.floor(Math.random() * (80-10)+10); 
+        this.vxn= vxn || Math.floor(Math.random() * (80-10)+10); 
+        this.vyn= vyn || Math.floor(Math.random() * (160-10)+10); 
+        this.vzn= vzn || Math.floor(Math.random() * (80-10)+10); 
 
-        this.paso = 0.5;
-        this.krest = 0.8;
+        this.mass  = mass  || Math.random();
+        this.krest = krest || 0.8;
     }
 
     setParticle(particle){

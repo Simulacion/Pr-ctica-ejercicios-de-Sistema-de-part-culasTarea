@@ -1,10 +1,13 @@
 export default class Calculus {
-    constructor(mass, step) {
-      this.mass     = mass;
-      this.step     = step;
+    constructor() {
+      this.mass     = 2;
+      this.step     = 0.5;
+      this.gravity  = -9.8;
     }
+
     gravityForce(mass){
-        return gravity*mass
+        // console.log(mass*this.gravity);
+        return mass*this.gravity
     }
 
     f(axis, v, yAxis){
@@ -15,7 +18,7 @@ export default class Calculus {
     }
     
     dv(axis, v, yAxis){
-        return this.f(axis, v, yAxis)/this.mass
+        return this.f(axis, v, yAxis)/this.mass;
     }
     
     d(axis, v, yAxis){
@@ -23,6 +26,12 @@ export default class Calculus {
     }
 
     euler (y, f, yAxis){
-        return   y + f(null, y, yAxis) * this.step;
+        if(f=='dv'){
+            console.log( y, '+',this.dv(null, y, yAxis),'*', this.step,'=', (y + this.dv(null, y, yAxis)) * this.step);
+            return   (y + this.dv(null, y, yAxis)) * this.step; 
+        }
+        else{
+            return   (y + this.d(null, y, yAxis) )* this.step;
+        }
     }
   }

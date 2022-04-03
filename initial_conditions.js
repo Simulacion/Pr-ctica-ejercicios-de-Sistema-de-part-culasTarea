@@ -1,7 +1,7 @@
 var btnSituacion1 =  document.getElementById('btnSituacion1');
 var x0_ =  document.getElementById('x0');
 
-var particles = 10;
+var particles = 1;
 
 // input range
 var t0      = 0;

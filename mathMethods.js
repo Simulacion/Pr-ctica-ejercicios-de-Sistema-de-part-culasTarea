@@ -28,10 +28,12 @@ export default class Calculus {
 
     euler (y, f, yAxis){
         if(f=='dv'){
-            return   (y + this.dv(null, y, yAxis)) * this.step; 
+            this.aux = y + this.dv(null, y, yAxis) * this.step
+            console.log(`${y} + ${this.dv(null, y, yAxis)} * ${this.step} = ${this.aux}`);
+            return  this.aux ; 
         }
         else{
-            return   (y + this.d(null, y, yAxis))* this.step;
+            return   y + this.d(null, y, yAxis) * this.step;
         }
     }
   }

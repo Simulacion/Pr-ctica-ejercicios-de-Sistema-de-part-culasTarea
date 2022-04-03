@@ -35,7 +35,6 @@ export default class Particle{
 
     detectCollision(){
         if(this.yn <= 0){
-            console.log(this.yn);
             this.yn     =   0;
             this.vxn    =   this.kRest * this.vxn;
             this.vyn    =   this.kRest * this.vyn * -1;
@@ -45,13 +44,13 @@ export default class Particle{
     }
 
     euler(){
-        this.vxn = this.vxn + this.calculus.euler(this.vxn, 'dv', false);
-        this.vyn = this.vyn + this.calculus.euler(this.vyn, 'dv', true);
-        this.vzn = this.vzn + this.calculus.euler(this.vzn, 'dv', false);
+        this.vxn = this.calculus.euler(this.vxn, 'dv', false);
+        this.vyn = this.calculus.euler(this.vyn, 'dv', true);
+        this.vzn = this.calculus.euler(this.vzn, 'dv', false);
 
-        this.xn = this.xn + this.calculus.euler(this.vxn, 'd', false);
-        this.yn = this.yn + this.calculus.euler(this.vyn, 'd', true);
-        this.zn = this.zn + this.calculus.euler(this.vzn, 'd', false);
+        this.xn = this.calculus.euler(this.vxn, 'd', false);
+        this.yn = this.calculus.euler(this.vyn, 'd', true);
+        this.zn = this.calculus.euler(this.vzn, 'd', false);
         
         this.detectCollision();
     }

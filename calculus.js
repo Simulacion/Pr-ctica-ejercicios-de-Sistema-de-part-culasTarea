@@ -1,25 +1,37 @@
 import {masa as m, gravity} from './initial_conditions.js'
 
-function gravityForce(m_){
-    return gravity*m_
-}
+export default class Calculus{
+    constructor(){
+        this.mass = m;
+        this.gravity = gravity;
+        this.paso = 0.5;
 
-function f(time, axis, v, yAxis){
-    if(yAxis){
-        return gravityForce(m)
     }
-    return 0;
+        
+    gravityForce(mass){
+        return this.gravity*mass
+    }
+    f( v, yAxis){
+        if(yAxis){
+            return this.gravityForce(this.mass)
+        }
+        return 0;
+    }
+    
+    dv( v, yAxis){
+        return this.f( v, yAxis)/this.mass
+    }
+    
+    d( v, yAxis){
+        return v
+    }
+
+    euler(p, v, f, yAxis){
+        if(f=='dv'){
+            return v + this.dv(v, yAxis)*this.paso;
+        }else if(f=='d'){
+            return p + this.d(v, yAxis)*this.paso;
+        }
+    }
 }
 
-function dv(time, axis, v, yAxis){
-    return f(time, axis, v, yAxis)/m
-}
-
-function d(time, axis, v, yAxis){
-    return v
-}
-export{
-    f,
-    d,
-    dv
-}

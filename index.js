@@ -1,8 +1,7 @@
-import {particles} from './geometries.js'
-
 import { OrbitControls } from 'https://unpkg.com/three@0.119.1/examples/jsm/controls/OrbitControls.js';
 import * as THREE from 'https://unpkg.com/three@0.119.1/build/three.module.js';
-
+import * as initialConditions from './initial_conditions.js'; 
+import Particle from './Particle.js'
 
 var container = document.getElementById('canvas');
 
@@ -27,7 +26,6 @@ document.body.appendChild(renderer.domElement);
 
 container.appendChild(renderer.domElement);
 
-
 const controls = new OrbitControls( camera, renderer.domElement );
 
 const size = 10000;
@@ -39,16 +37,27 @@ scene.add( gridHelperX );
 const axesHelper = new THREE.AxesHelper( 5 );
 scene.add( axesHelper );
 
-
 camera.position.x = -820;
 camera.position.z = 1765;
 camera.position.y = 2158;
 
+var particles = []
+var color = new THREE.Color( 0xffffff );
 
-for (let i = 0; i < particles.length; i++) {
-  scene.add(particles[i].particle);
+for (let i = 0; i < initialConditions.particles; i++) {
+    color.setHex( Math.random() * 0xffffff );
+
+    let geometry = new THREE.SphereGeometry(Math.floor(Math.random() * 80),32,16);
+    let material = new THREE.MeshBasicMaterial({color});
+
+    let newParticle = new Particle();
+    newParticle.particle = new THREE.Mesh(geometry, material)
+    particles.push(newParticle);
 }
 
+for (let i = 0; i < particles.length; i++) {
+    scene.add(particles[i].particle);
+}
 
 function animate() {
 

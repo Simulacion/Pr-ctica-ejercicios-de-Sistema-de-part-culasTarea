@@ -2,8 +2,11 @@ import {particles} from './geometries.js'
 import * as initialConditions from './initial_conditions.js'
 import * as calculus from './calculus.js'
 
+import Calculus from './mathMethods.js';
+
 import { OrbitControls } from 'https://unpkg.com/three@0.119.1/examples/jsm/controls/OrbitControls.js';
 import * as THREE from 'https://unpkg.com/three@0.119.1/build/three.module.js';
+
 
 
 var container = document.getElementById('canvas');
@@ -49,15 +52,6 @@ camera.position.y = 2158;
 
 // initial conditions
 var particlesProperties = []
-
-var vxn = initialConditions.vx0;
-var vyn = initialConditions.vy0;
-var vzn = initialConditions.vz0;
-
-var xn  = initialConditions.x0;
-var yn  = initialConditions.y0;
-var zn  = initialConditions.z0;
-
 var masa = initialConditions.masa;
 
 var paso = initialConditions.paso;
@@ -79,23 +73,24 @@ for (let i = 0; i < particles.length; i++) {
   scene.add(particles[i]);
 }
 
+var temp = new Calculus(tn, masa, paso);
 
 function animate() {
   tn  = tn + paso
 
   for (let i = 0; i < particlesProperties.length; i++) {
-    particlesProperties[i].vxn = particlesProperties[i].vxn + calculus.dv(tn, particlesProperties[i].xn, particlesProperties[i].vxn)*paso
-    particlesProperties[i].vyn = particlesProperties[i].vyn + calculus.dv(tn, particlesProperties[i].yn, particlesProperties[i].vyn, true)*paso
-    particlesProperties[i].vzn = particlesProperties[i].vzn + calculus.dv(tn, particlesProperties[i].zn, particlesProperties[i].vzn)*paso
-    particlesProperties[i].xn  = particlesProperties[i].xn  + calculus.d(tn, particlesProperties[i].xn, particlesProperties[i].vxn)*paso
-    particlesProperties[i].yn  = particlesProperties[i].yn  + calculus.d(tn, particlesProperties[i].yn, particlesProperties[i].vyn, true)*paso
-    particlesProperties[i].zn  = particlesProperties[i].zn  + calculus.d(tn, particlesProperties[i].zn, particlesProperties[i].vzn)*paso
+    particlesProperties[i].vxn = particlesProperties[i].vxn + calculus.dv(tn, particlesProperties[i].xn, particlesProperties[i].vxn)*paso;
+    particlesProperties[i].vyn = particlesProperties[i].vyn + calculus.dv(tn, particlesProperties[i].yn, particlesProperties[i].vyn, true)*paso;
+    particlesProperties[i].vzn = particlesProperties[i].vzn + calculus.dv(tn, particlesProperties[i].zn, particlesProperties[i].vzn)*paso;
+    particlesProperties[i].xn  = particlesProperties[i].xn  + calculus.d (tn, particlesProperties[i].xn, particlesProperties[i].vxn)*paso;
+    particlesProperties[i].yn  = particlesProperties[i].yn  + calculus.d (tn, particlesProperties[i].yn, particlesProperties[i].vyn, true)*paso;
+    particlesProperties[i].zn  = particlesProperties[i].zn  + calculus.d (tn, particlesProperties[i].zn, particlesProperties[i].vzn)*paso;
 
     if(particlesProperties[i].yn <= 0){
       particlesProperties[i].yn    = 0
-      particlesProperties[i].vxn   =  krest * particlesProperties[i].vxn 
-      particlesProperties[i].vyn   = -krest * particlesProperties[i].vyn 
-      particlesProperties[i].vzn   =  krest * particlesProperties[i].vzn 
+      particlesProperties[i].vxn   =  krest * particlesProperties[i].vxn;
+      particlesProperties[i].vyn   = -krest * particlesProperties[i].vyn; 
+      particlesProperties[i].vzn   =  krest * particlesProperties[i].vzn; 
     }
     particlesProperties[i].particle.position.x = particlesProperties[i].xn;
     particlesProperties[i].particle.position.y = particlesProperties[i].yn;

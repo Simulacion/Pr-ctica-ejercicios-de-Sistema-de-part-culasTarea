@@ -1,6 +1,6 @@
 export default class Calculus {
     constructor() {
-      this.mass     = 2;
+      this.mass     = 1;
       this.step     = 0.5;
       this.gravity  = -9.8;
     }
@@ -12,6 +12,7 @@ export default class Calculus {
 
     f(axis, v, yAxis){
         if(yAxis){
+            // console.log(v, yAxis);
             return this.gravityForce(this.mass)
         }
         return 0;
@@ -27,11 +28,10 @@ export default class Calculus {
 
     euler (y, f, yAxis){
         if(f=='dv'){
-            console.log( y, '+',this.dv(null, y, yAxis),'*', this.step,'=', (y + this.dv(null, y, yAxis)) * this.step);
             return   (y + this.dv(null, y, yAxis)) * this.step; 
         }
         else{
-            return   (y + this.d(null, y, yAxis) )* this.step;
+            return   (y + this.d(null, y, yAxis))* this.step;
         }
     }
   }

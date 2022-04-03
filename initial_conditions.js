@@ -32,24 +32,6 @@ var krest     = 0.8
 
 var tn  = t0
 
-btnSituacion1.addEventListener('click', ()=>{
-    t0      = 0;
-    tf      = 10;
-    paso    = 0.5;
-    tam     = 5;
-    frames = Math.round((tf-t0/paso)+1);
-    x0  = Math.floor(Math.random() * 30);
-    y0  = 50
-    z0  = Math.floor(Math.random() * 30);
-    vx0 = Math.floor(Math.random() * 30);
-    vy0 = Math.floor(Math.random() * 100);
-    vz0 = Math.floor(Math.random() * 30);
-    masa      = 1
-    gravity   = -9.8
-    krest     = 0.8
-    tn  = t0
-})
-
 export {
     t0,
     tf,

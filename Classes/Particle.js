@@ -12,7 +12,7 @@ export default class Particle{
         this.vyn= vyn || Math.floor(Math.random() * (160-10)+10); 
         this.vzn= vzn || Math.floor(Math.random() * (80-10)+10); 
 
-        this.mass  = mass  || Math.floor(Math.random() * (1000-1)+1);
+        this.mass  = mass  || Math.floor(Math.random() * (100-1)+1);
         this.krest = krest || 0.8;
 
         this.color = color  || new THREE.Color( 0xffffff ).setHex( Math.random() * 0xffffff );
@@ -21,6 +21,12 @@ export default class Particle{
         this.calculus = new Calculus(this.mass, this.gravity, null);
 
         this.newParticle();
+        // this.logger();
+    }
+
+    logger(){
+        console.log(this.xn, this.yn, this.zn);
+        console.log(this.vxn, this.vyn, this.vzn);
     }
 
     setParticle(particle){
@@ -31,6 +37,7 @@ export default class Particle{
     getParticle(){
         return this.particle;
     }
+    
     newParticle(){
         this.geometry = new THREE.SphereGeometry(this.tam,32,16);
         this.material = new THREE.MeshBasicMaterial({color : this.color});
@@ -52,13 +59,25 @@ export default class Particle{
         }
         this.updatePosition()
     }
-    euler(){
+
+    parabolicShot_Euler(){
         this.vxn = this.calculus.euler(this.xn, this.vxn, 'dv', false);
         this.vyn = this.calculus.euler(this.yn, this.vyn, 'dv', true);
         this.vzn = this.calculus.euler(this.zn, this.vzn, 'dv', false);
         this.xn  = this.calculus.euler(this.xn, this.vxn, 'd', false);
         this.yn  = this.calculus.euler(this.yn, this.vyn, 'd', true);
         this.zn  = this.calculus.euler(this.zn, this.vzn, 'd', false);
+
+        this.detectCollision();
+    }
+    
+    parabolicShot_RK(){
+        this.vxn = this.calculus.RungeKutta(this.xn, this.vxn, 'dv', false);
+        this.vyn = this.calculus.RungeKutta(this.yn, this.vyn, 'dv', true);
+        this.vzn = this.calculus.RungeKutta(this.zn, this.vzn, 'dv', false);
+        this.xn  = this.calculus.RungeKutta(this.xn, this.vxn, 'd', false);
+        this.yn  = this.calculus.RungeKutta(this.yn, this.vyn, 'd', true);
+        this.zn  = this.calculus.RungeKutta(this.zn, this.vzn, 'd', false);
 
         this.detectCollision();
     }

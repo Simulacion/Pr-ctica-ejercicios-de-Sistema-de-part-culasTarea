@@ -1,9 +1,9 @@
+import * as THREE from 'https://unpkg.com/three@0.119.1/build/three.module.js';
 import Calculus from './Calculus.js'
 
-var calculus = new Calculus();
 
 export default class Particle{
-    constructor(xn, yn, zn, vxn, vyn, vzn, mass, krest){
+    constructor(xn, yn, zn, vxn, vyn, vzn, mass, tam, color, krest){
         this.particle = null;
         this.xn = xn  || Math.floor(Math.random() * (80-10)+10); 
         this.yn = yn  || Math.floor(Math.random() * (80-10)+10); 
@@ -12,17 +12,29 @@ export default class Particle{
         this.vyn= vyn || Math.floor(Math.random() * (160-10)+10); 
         this.vzn= vzn || Math.floor(Math.random() * (80-10)+10); 
 
-        this.mass  = mass  || Math.random();
+        this.mass  = mass  || Math.floor(Math.random() * (1000-1)+1);
         this.krest = krest || 0.8;
+
+        this.color = color  || new THREE.Color( 0xffffff ).setHex( Math.random() * 0xffffff );
+        this.tam   = tam    || Math.floor(Math.random() * (500-10)+10);
+
+        this.calculus = new Calculus(this.mass, this.gravity, null);
+
+        this.newParticle();
     }
 
     setParticle(particle){
         this.particle = particle;
-        updatePosition()
+        this.updatePosition()
     }
 
     getParticle(){
         return this.particle;
+    }
+    newParticle(){
+        this.geometry = new THREE.SphereGeometry(this.tam,32,16);
+        this.material = new THREE.MeshBasicMaterial({color : this.color});
+        this.setParticle(new THREE.Mesh(this.geometry, this.material))
     }
 
     updatePosition(){
@@ -41,16 +53,13 @@ export default class Particle{
         this.updatePosition()
     }
     euler(){
-        this.vxn = calculus.euler(this.xn, this.vxn, 'dv', false);
-        this.vyn = calculus.euler(this.yn, this.vyn, 'dv', true);
-        this.vzn = calculus.euler(this.zn, this.vzn, 'dv', false);
-        this.xn  = calculus.euler(this.xn, this.vxn, 'd', false);
-        this.yn  = calculus.euler(this.yn, this.vyn, 'd', true);
-        this.zn  = calculus.euler(this.zn, this.vzn, 'd', false);
+        this.vxn = this.calculus.euler(this.xn, this.vxn, 'dv', false);
+        this.vyn = this.calculus.euler(this.yn, this.vyn, 'dv', true);
+        this.vzn = this.calculus.euler(this.zn, this.vzn, 'dv', false);
+        this.xn  = this.calculus.euler(this.xn, this.vxn, 'd', false);
+        this.yn  = this.calculus.euler(this.yn, this.vyn, 'd', true);
+        this.zn  = this.calculus.euler(this.zn, this.vzn, 'd', false);
 
         this.detectCollision();
-    }
-    test(){
-        console.log('hello');
     }
 }

@@ -3,7 +3,6 @@ export default class Calculus{
         this.mass       = mass      || 1;
         this.gravity    = gravity   || -9.8;
         this.step       = step      || 0.5;
-
     }
         
     gravityForce(mass){

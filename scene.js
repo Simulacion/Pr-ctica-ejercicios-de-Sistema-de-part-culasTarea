@@ -84,12 +84,13 @@ function animate() {
   tn  = tn + paso
 
   for (let i = 0; i < particlesProperties.length; i++) {
-    particlesProperties[i].vxn = particlesProperties[i].vxn + calculus.dv(tn, particlesProperties[i].xn, particlesProperties[i].vxn)*paso
-    particlesProperties[i].vyn = particlesProperties[i].vyn + calculus.dv(tn, particlesProperties[i].yn, particlesProperties[i].vyn, true)*paso
-    particlesProperties[i].vzn = particlesProperties[i].vzn + calculus.dv(tn, particlesProperties[i].zn, particlesProperties[i].vzn)*paso
-    particlesProperties[i].xn  = particlesProperties[i].xn  + calculus.d(tn, particlesProperties[i].xn, particlesProperties[i].vxn)*paso
-    particlesProperties[i].yn  = particlesProperties[i].yn  + calculus.d(tn, particlesProperties[i].yn, particlesProperties[i].vyn, true)*paso
-    particlesProperties[i].zn  = particlesProperties[i].zn  + calculus.d(tn, particlesProperties[i].zn, particlesProperties[i].vzn)*paso
+    // console.log(particlesProperties[i].vxn, '=', particlesProperties[i].vxn, '+' ,calculus.dv(particlesProperties[i].vxn),'*',paso);
+    particlesProperties[i].vxn = particlesProperties[i].vxn + calculus.dv(particlesProperties[i].vxn)*paso
+    particlesProperties[i].vyn = particlesProperties[i].vyn + calculus.dv(particlesProperties[i].vyn, true)*paso
+    particlesProperties[i].vzn = particlesProperties[i].vzn + calculus.dv(particlesProperties[i].vzn)*paso
+    particlesProperties[i].xn  = particlesProperties[i].xn  + calculus.d(particlesProperties[i].vxn)*paso
+    particlesProperties[i].yn  = particlesProperties[i].yn  + calculus.d(particlesProperties[i].vyn, true)*paso
+    particlesProperties[i].zn  = particlesProperties[i].zn  + calculus.d(particlesProperties[i].vzn)*paso
 
     if(particlesProperties[i].yn <= 0){
       particlesProperties[i].yn    = 0
@@ -100,6 +101,7 @@ function animate() {
     particlesProperties[i].particle.position.x = particlesProperties[i].xn;
     particlesProperties[i].particle.position.y = particlesProperties[i].yn;
     particlesProperties[i].particle.position.z = particlesProperties[i].zn;
+
   }
   
   // camera.lookAt(xn, yn, zn);

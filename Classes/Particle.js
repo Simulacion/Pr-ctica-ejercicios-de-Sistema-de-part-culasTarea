@@ -20,7 +20,7 @@ export default class Particle{
         
 
         this.calculus = new Calculus(this.mass, this.gravity, null);
-        this.count = calculus.getCount();  
+        this.count = this.calculus.getCount();      
         this.newParticle();
         // this.logger();
     }
@@ -31,7 +31,7 @@ export default class Particle{
     }
 
     getCount(){
-        return this.count;
+        return this.calculus.getCount();
     }
     setParticle(particle){
         this.particle = particle;

@@ -17,9 +17,10 @@ export default class Particle{
 
         this.color = color  || new THREE.Color( 0xffffff ).setHex( Math.random() * 0xffffff );
         this.tam   = tam    || Math.floor(Math.random() * (500-10)+10);
+        
 
         this.calculus = new Calculus(this.mass, this.gravity, null);
-
+        this.count = this.calculus.getCount();      
         this.newParticle();
         // this.logger();
     }
@@ -29,6 +30,9 @@ export default class Particle{
         console.log(this.vxn, this.vyn, this.vzn);
     }
 
+    getCount(){
+        return this.calculus.getCount();
+    }
     setParticle(particle){
         this.particle = particle;
         this.updatePosition()
@@ -39,12 +43,14 @@ export default class Particle{
     }
     
     newParticle(){
+        this.calculus.setCount(this.calculus.getCount()  + 1);
         this.geometry = new THREE.SphereGeometry(this.tam,32,16);
         this.material = new THREE.MeshBasicMaterial({color : this.color});
         this.setParticle(new THREE.Mesh(this.geometry, this.material))
     }
 
     updatePosition(){
+        this.calculus.setCount(this.calculus.getCount()  + 3);
         this.particle.position.x = this.xn;
         this.particle.position.y = this.yn;
         this.particle.position.z = this.zn;
@@ -52,6 +58,7 @@ export default class Particle{
 
     detectCollision(){
         if(this.yn <= 0){
+            this.calculus.setCount(this.calculus.getCount()  + 4);
             this.yn    = 0
             this.vxn   =  this.krest * this.vxn 
             this.vyn   = -this.krest * this.vyn 
@@ -61,6 +68,7 @@ export default class Particle{
     }
 
     parabolicShot_Euler(){
+        this.calculus.setCount(this.calculus.getCount()  + 6);
         this.vxn = this.calculus.euler(this.xn, this.vxn, 'dv', false);
         this.vyn = this.calculus.euler(this.yn, this.vyn, 'dv', true);
         this.vzn = this.calculus.euler(this.zn, this.vzn, 'dv', false);
@@ -72,6 +80,7 @@ export default class Particle{
     }
     
     parabolicShot_RK(){
+        this.calculus.setCount(this.calculus.getCount()  + 6);
         this.vxn = this.calculus.RungeKutta(this.xn, this.vxn, 'dv', false);
         this.vyn = this.calculus.RungeKutta(this.yn, this.vyn, 'dv', true);
         this.vzn = this.calculus.RungeKutta(this.zn, this.vzn, 'dv', false);

@@ -1,6 +1,7 @@
 import { OrbitControls } from 'https://unpkg.com/three@0.119.1/examples/jsm/controls/OrbitControls.js';
 import * as THREE from 'https://unpkg.com/three@0.119.1/build/three.module.js';
 import Particle from './Classes/Particle.js'
+import Calculus from './Classes/Calculus.js'
 
 // CREATE SCENE AND CAMERA-------------------------------------------------
 var container = document.getElementById('canvas');
@@ -32,29 +33,36 @@ const controls = new OrbitControls( camera, renderer.domElement );
 
 // GRID ----------------------------------------------------------
 const size = 100000;
-const divisions = 100;
+const divisions = 50;
 
-const gridHelperX = new THREE.GridHelper( size, divisions );
-scene.add( gridHelperX );
+const gridHelper = new THREE.GridHelper( size, divisions );
+gridHelper.position.y = -500
+scene.add( gridHelper );
 
 //SITUATIONS--------------------------------------------------
-var particles = []
+var h3Count = document.getElementById('count');
 
+var particles = []
+var count = 0;
 // let particle = new Particle(xn, yn, zn, vxn, vyn, vzn, mass, tam, color, krest)
 // null ==> random values by default  
+
 function situation1(n) {
-  console.log(n/4);
   particles = []
+  count = 0;
   for (let i = 0; i < n/4; i++) {
-    let particleType1 = new Particle(20, 0, 20,  100,  200,   0,    null, null, null, null);
-    let particleType2 = new Particle(20, 0, 20, -100,  200,   0,    null, null, null, null);
-    let particleType3 = new Particle(20, 0, 20,  0,    200,   100,  null, null, null, null);
-    let particleType4 = new Particle(20, 0, 20,  0,    200,  -100,  null, null, null, null);
+    // Se toma el valor 1 para que el lenguaje no tome un valor aleatorio
+    let particleType1 = new Particle(20, 1, 20,  100,  200,   1,    null, null, null, null);
+    let particleType2 = new Particle(20, 1, 20, -100,  200,   1,    null, null, null, null);
+    let particleType3 = new Particle(20, 1, 20,  1,    200,   100,  null, null, null, null);      
+    let particleType4 = new Particle(20, 1, 20,  1,    200,  -100,  null, null, null, null);
+
 
     particles.push(particleType1);
     particles.push(particleType2);
     particles.push(particleType3);
     particles.push(particleType4);
+
 
     scene.add(particles[i    ].getParticle());
     scene.add(particles[i + 1].getParticle());
@@ -64,12 +72,14 @@ function situation1(n) {
 }
 
 function situation2(n) {
+  count = 0;
   particles = []
   for (let i = 0; i < n/4; i++) {
-    let particleType1 = new Particle(20, 0, 20,  100,  200,   100,  null, null, null, null);
-    let particleType2 = new Particle(20, 0, 20, -100,  200,   100,  null, null, null, null);
-    let particleType3 = new Particle(20, 0, 20, -100,  200,   100,  null, null, null, null);
-    let particleType4 = new Particle(20, 0, 20,  100,  200,  -100,  null, null, null, null);
+    let particleType1 = new Particle(20, 1, 20,  100,  200,   100,  null, null, null, null);
+    let particleType2 = new Particle(20, 1, 20, -100,  200,   100,  null, null, null, null);
+    let particleType3 = new Particle(20, 1, 20, -100,  200,   100,  null, null, null, null);
+    let particleType4 = new Particle(20, 1, 20,  100,  200,  -100,  null, null, null, null);
+
 
     particles.push(particleType1);
     particles.push(particleType2);
@@ -84,6 +94,7 @@ function situation2(n) {
 }
 
 function situation3(n) {
+  count = 0;
   particles = []
   for (let i = 0; i < n*0.1; i++) {
     let particle= new Particle(1000, 10000, 1000,  1,  1,   1,  null, null, null, 0.9);
@@ -101,6 +112,7 @@ function situation3(n) {
     let particleType3 = new Particle(1000, 1, 100,  vx,  vy/10,   vx,  null, null, new THREE.Color(0, 0, 255), 0.5);
     let particleType4 = new Particle(1, 1, 1000,  Math.abs(vx),  vy,   Math.abs(vx),  null, null, new THREE.Color(0, 255, 0), krest);
 
+
     particles.push(particleType2);
     particles.push(particleType3);
     particles.push(particleType4);
@@ -111,6 +123,8 @@ function situation3(n) {
 }
 
 // EVENTS ------------------------------
+
+
 var nParticlesInputRange = document.getElementById('nParticlesInputRange');
 
 var radioButtonEuler = document.getElementById('radioButtonEuler');
@@ -136,10 +150,14 @@ situation3Button.addEventListener('click', ()=>{
 function animate() {
 
   for (let i = 0; i < particles.length; i++) {
-    if (radioButtonRK.checked)
+    if (radioButtonRK.checked){
       particles[i].parabolicShot_RK();
-    if(radioButtonEuler.checked)
+      h3Count.innerHTML = '204 * F * t * n';
+    }
+    if(radioButtonEuler.checked){
       particles[i].parabolicShot_Euler();
+      h3Count.innerHTML = '36 * F * t * n';
+    }
   }
   
   requestAnimationFrame(animate);
